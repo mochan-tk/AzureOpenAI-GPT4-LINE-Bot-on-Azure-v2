@@ -6,6 +6,9 @@ param access string
 param containerRegistryName string
 param containerVer string
 param appsPort string
+param aoaiApiKey string
+param aoaiApiBase string
+param aoaiApiEngineName string
 
 var appInsightsName = 'AppInsights'
 
@@ -14,6 +17,7 @@ param openAIModelDeploymentName string = 'OpenAIDev-${uniqueString(resourceGroup
 //param openAiRegion string = 'East US'
 param openAiRegion string = 'South Central US'
 
+/*
 // https://github.com/Azure-Samples/cosmosdb-chatgpt/blob/4ce83e6236cf311beb3a7b2367932c8c7b429268/azuredeploy.bicep#L111
 resource openAiAccount 'Microsoft.CognitiveServices/accounts@2022-12-01' = {
   name: openAiAccountName
@@ -42,6 +46,7 @@ resource openAiAccountName_openAIModelDeployment 'Microsoft.CognitiveServices/ac
     }
   }
 }
+*/
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-12-01' existing = {
   name: containerRegistryName
@@ -146,15 +151,15 @@ resource containerApps 'Microsoft.App/containerApps@2022-10-01' = {
             }
             {
               name: 'OPENAI_API_KEY'
-              value: openAiAccount.listKeys().key1
+              value: aoaiApiKey
             }
             {
               name: 'OPENAI_API_BASE'
-              value: openAiAccount.properties.endpoint
+              value: aoaiApiBase
             }
             {
               name: 'OPENAI_API_ENGINE_NAME'
-              value: openAIModelDeploymentName
+              value: aoaiApiEngineName
             }
           ]
         }
